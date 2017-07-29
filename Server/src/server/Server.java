@@ -22,18 +22,30 @@ public class Server {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        try{
+        try {
             ServerSocket ser = new ServerSocket(9999);
             Socket sock = ser.accept();
             BufferedReader ed = new BufferedReader(new InputStreamReader(sock.getInputStream()));
-            String tmp = ed.readLine();
-            System.out.print("I Received:" + tmp);
-            
+            String tmp;
+            int i = 0;
             PrintStream pr = new PrintStream(sock.getOutputStream());
-            String ack = "Yup I got it";
-            pr.println(ack);
+            tmp = ed.readLine();
+            System.out.println("I Received:" + tmp);
+            pr.println("Initializing");
+            while (true) {               
+                tmp = ed.readLine();
+                System.out.println("I Received:" + tmp);  
+                if (i == 10) {
+                    pr.println("crash");
+                     System.out.println("We gonna crash!");
+                }else{
+                     pr.println("Recieved");
+                }
+                 i++;
+            }
+
+        } catch (Exception ex) {
         }
-        catch (Exception ex){}
     }
-    
+
 }
