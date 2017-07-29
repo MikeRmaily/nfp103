@@ -5,6 +5,7 @@
  */
 package server.SACA;
 import java.io.*;
+import java.net.ServerSocket;
 /**
  *
  * @author Mike
@@ -14,15 +15,17 @@ public class SACACommandes implements Runnable {
   BufferedReader _in; // pour gestion du flux d'entrée (celui de la console)
   String _strCommande=""; // contiendra la commande tapée
   Thread _t; // contiendra le thread
-
+  ServerSocket _ss;
+  
   //** Constructeur : initialise les variables nécessaires **
-  SACACommandes(SACAServeur SACAServ)
+  SACACommandes(SACAServeur SACAServ,ServerSocket ss)
   {
     _SACAServ=SACAServ; // passage de local en global
     // le flux d'entrée de la console sera géré plus pratiquement dans un BufferedReader
     _in = new BufferedReader(new InputStreamReader(System.in));
     _t = new Thread(this); // instanciation du thread
     _t.start(); // demarrage du thread, la fonction run() est ici lancée
+    _ss = ss;
   }
 
   //** Methode : attend les commandes dans la console et exécute l'action demandée **
@@ -41,6 +44,10 @@ public class SACACommandes implements Runnable {
           // ... on affiche le nombre de clients actuellement connectés
           System.out.println("Nombre de connectes : "+_SACAServ.getNbClients());
           System.out.println("--------");
+        }
+         else if(_strCommande.equalsIgnoreCase("add")) // commande "add" detectée ...
+        {
+           new SACAThread(_ss.accept(),_SACAServ); 
         }
         else
         {

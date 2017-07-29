@@ -11,6 +11,7 @@ import java.io.*;
  * @author Mike
  */
 public class SACAThread {
+    
   private Thread _t; // contiendra le thread du client
   private Socket _s; // recevra le socket liant au client
   private PrintWriter _out; // pour gestion du flux de sortie
@@ -21,10 +22,12 @@ public class SACAThread {
   //** Constructeur : crée les éléments nécessaires au dialogue avec le client **
   SACAThread(Socket s, SACAServeur SACAServeur) // le param s est donnée dans BlablaServ par ss.accept()
   {
+        System.out.println("mike");
     _SACAServ= SACAServeur; // passage de local en global (pour gestion dans les autres méthodes)
     _s=s; // passage de local en global
     try
     {
+     
       // fabrication d'une variable permettant l'utilisation du flux de sortie avec des string
       _out = new PrintWriter(_s.getOutputStream());
       // fabrication d'une variable permettant l'utilisation du flux d'entrée avec des string

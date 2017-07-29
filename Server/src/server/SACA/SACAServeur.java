@@ -19,20 +19,22 @@ public class SACAServeur {
   //** Methode : la première méthode exécutée, elle attend les connections **
   public static void main(String args[])
   {
-    SACAServeur SACAServeur = new SACAServeur(); // instance de la classe principale
+    SACAServeur SACAServ = new SACAServeur(); // instance de la classe principale
     try
     {
       Integer port;
-      if(args.length<=0) port=new Integer("9999"); // si pas d'argument : port 18000 par défaut
-      else port = new Integer(args[0]); // sinon il s'agit du numéro de port passé en argument
-        SACACommandes sacaCommandes = new SACACommandes(SACAServeur); // lance le thread de gestion des commandes
-
-      ServerSocket ss = new ServerSocket(port); // ouverture d'un socket serveur sur port
+    //  if(args.length<=0) port=new Integer("9999"); // si pas d'argument : port 18000 par défaut
+    //  else port = new Integer(args[0]); // sinon il s'agit du numéro de port passé en argument
+    port = 8989; 
+       ServerSocket ss = new ServerSocket(port); // ouverture d'un socket serveur sur port
       printWelcome(port);
-      while (true) // attente en boucle de connexion (bloquant sur ss.accept)
-      {
-          SACAThread sacaThread = new SACAThread(ss.accept(),SACAServeur); // un client se connecte, un nouveau thread client est lancé
-      }
+    SACACommandes sacaCommandes = new SACACommandes(SACAServ,ss); // lance le thread de gestion des commandes
+
+   
+//      while (true) // attente en boucle de connexion (bloquant sur ss.accept)
+//     {
+//          SACAThread sacaThread = new SACAThread(ss.accept(),SACAServ); // un client se connecte, un nouveau thread client est lancé
+//     }
     }
     catch (IOException | NumberFormatException e) { }
   }
