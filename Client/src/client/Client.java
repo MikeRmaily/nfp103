@@ -15,7 +15,7 @@ import java.util.Vector;
 
 /**
  *
- * @author Mike
+ * @author Khalil
  */
 public class Client {
 
@@ -42,7 +42,7 @@ public class Client {
             BufferedReader ed = new BufferedReader(rd);
             String temp = ed.readLine();
             */
-            //Get Info from sever
+            //Get Info from server
             BufferedReader Ack = new BufferedReader(new InputStreamReader(sock.getInputStream()));
             String StrAck;
             //Push Position to server
