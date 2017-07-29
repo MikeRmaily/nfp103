@@ -13,7 +13,7 @@ import java.net.Socket;
 
 /**
  *
- * @author Mike & Khalil
+ * @author Mike
  */
 public class Server {
 
