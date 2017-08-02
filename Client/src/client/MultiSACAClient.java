@@ -4,9 +4,10 @@
  * and open the template in the editor.
  */
 package client;
+import server.SACA.MultiSACAServeur;
 import java.net.*;
 import java.io.*;
-import server.SACA.*;
+
 /**
  *
  * @author Mike
@@ -21,11 +22,11 @@ class SACAClientThread extends Thread {
   public static int threadCount() { 
     return threadcount; 
   }
-  public SACAClientThread(InetAddress addr) {
+  public SACAClientThread(InetAddress addr) throws IOException {
     System.out.println("Making client " + id);
     threadcount++;
     socket =
-            new Socket(addr, MultiSACAServer.PORT); // If the creation of the socket fails, 
+            new Socket(addr, MultiSACAServeur.PORT); // If the creation of the socket fails, 
       // nothing needs to be cleaned up.
     try {    
       in = 
