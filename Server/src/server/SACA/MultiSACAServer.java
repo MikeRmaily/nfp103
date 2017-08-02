@@ -11,6 +11,30 @@ import java.net.*;
  *
  * @author Mike
  */
+
+public class MultiSACAServer {  
+  public static final int PORT = 8080;
+  public static void main(String[] args)
+      throws IOException {
+    ServerSocket s = new ServerSocket(PORT);
+    System.out.println("Server Started");
+    try {
+      while(true) {
+        // Blocks until a connection occurs:
+        Socket socket = s.accept();
+        try {
+          new SACAServer(socket);
+        } catch(IOException e) {
+          // If it fails, close the socket,
+          // otherwise the thread will close it:
+          socket.close();
+        }
+      }
+    } finally {
+      s.close();
+    }
+  } 
+}
 class SACAServer extends Thread {
   private Socket socket;
   private BufferedReader in;
@@ -50,28 +74,4 @@ class SACAServer extends Thread {
       } catch(IOException e) {}
     }
   }
-}
- 
-public class MultiSACAServer {  
-  public static final int PORT = 8080;
-  public static void main(String[] args)
-      throws IOException {
-    ServerSocket s = new ServerSocket(PORT);
-    System.out.println("Server Started");
-    try {
-      while(true) {
-        // Blocks until a connection occurs:
-        Socket socket = s.accept();
-        try {
-          new SACAServer(socket);
-        } catch(IOException e) {
-          // If it fails, close the socket,
-          // otherwise the thread will close it:
-          socket.close();
-        }
-      }
-    } finally {
-      s.close();
-    }
-  } 
 }
