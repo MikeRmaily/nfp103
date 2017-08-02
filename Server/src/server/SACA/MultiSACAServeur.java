@@ -12,7 +12,7 @@ import java.net.*;
  * @author Mike
  */
 
-public class MultiSACAServer {  
+public class MultiSACAServeur {  
   public static final int PORT = 8080;
   public static void main(String[] args)
       throws IOException {
