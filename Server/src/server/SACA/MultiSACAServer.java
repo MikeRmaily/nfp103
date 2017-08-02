@@ -53,7 +53,7 @@ class SACAServer extends Thread {
 }
  
 public class MultiSACAServer {  
-  static final int PORT = 8080;
+  public static final int PORT = 8080;
   public static void main(String[] args)
       throws IOException {
     ServerSocket s = new ServerSocket(PORT);
