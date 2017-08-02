@@ -12,6 +12,13 @@ import java.io.*;
  *
  * @author Mike
  */
+public class MultiSACAClient {
+ public void AddClient() throws UnknownHostException, IOException, InterruptedException{
+   InetAddress addr = InetAddress.getByName(null);
+   new SACAClientThread(addr);
+      Thread.sleep(100);
+   }
+}
 class SACAClientThread extends Thread {
   private Socket socket;
   private BufferedReader in;
@@ -68,18 +75,19 @@ class SACAClientThread extends Thread {
       threadcount--; // Ending this thread
     }
   }
+ 
 }
  
-public class MultiSACAClient {
-  static final int MAX_THREADS = 40;
-  public static void main(String[] args) 
-      throws IOException, InterruptedException {
-    InetAddress addr = 
-      InetAddress.getByName(null);
-    while(true) {
-      if(SACAClientThread.threadCount() < MAX_THREADS)
-        new SACAClientThread(addr);
-      Thread.currentThread().sleep(100);
-    }
-  }
-}
+//public class MultiSACAClient {
+//  static final int MAX_THREADS = 40;
+//  public static void main(String[] args) 
+//      throws IOException, InterruptedException {
+//    InetAddress addr = 
+//      InetAddress.getByName(null);
+//    while(true) {
+//      if(SACAClientThread.threadCount() < MAX_THREADS)
+//        new SACAClientThread(addr);
+//      Thread.currentThread().sleep(100);
+//    }
+//  }
+//}
