@@ -7,33 +7,77 @@ package server.SACA;
 
 import java.io.*;
 import java.net.*;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.*;
+import client.MultiSACAClient;
 /**
  *
  * @author Mike
  */
 
-public class MultiSACAServeur {  
+public class MultiSACAServeur implements ActionListener  {  
   public static final int PORT = 8080;
   public static void main(String[] args)
       throws IOException {
-    ServerSocket s = new ServerSocket(PORT);
-    System.out.println("Server Started");
-    try {
-      while(true) {
-        // Blocks until a connection occurs:
-        Socket socket = s.accept();
-        try {
-          new SACAServer(socket);
-        } catch(IOException e) {
-          // If it fails, close the socket,
-          // otherwise the thread will close it:
-          socket.close();
-        }
-      }
-    } finally {
-      s.close();
-    }
+         JFrame frame = new JFrame("JFrame Example");
+        JPanel panel = new JPanel();
+        panel.setLayout(new FlowLayout());
+        JLabel label = new JLabel("Add client!");
+        JButton button = new JButton();
+        button.setText("Press me");
+        panel.add(label);
+        panel.add(button);
+        frame.add(panel);
+        frame.setSize(300, 300);
+        frame.setLocationRelativeTo(null);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
+        button.addActionListener( new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                 ServerSocket s = null;
+                 Socket socket = null;
+                try {
+                    //System.out.println("Do Something Clicked");
+                    // Blocks until a connection occurs:
+                    s = new ServerSocket(PORT);
+                    System.out.println("Server Started");
+                    MultiSACAClient MultiSACAClient = new MultiSACAClient();
+                    MultiSACAClient.AddClient();
+                    socket = s.accept();
+                    new SACAServer(socket);
+                } catch (IOException ex) {
+                     try {
+                         socket.close();
+                     } catch (IOException ex1) {
+                         Logger.getLogger(MultiSACAServeur.class.getName()).log(Level.SEVERE, null, ex1);
+                     }
+                    Logger.getLogger(MultiSACAServeur.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(MultiSACAServeur.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                  finally{
+                     try {
+                         s.close();
+                     } catch (IOException ex) {
+                         Logger.getLogger(MultiSACAServeur.class.getName()).log(Level.SEVERE, null, ex);
+                     }
+                }
+                  
+                }
+        });
   } 
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+  
 }
 class SACAServer extends Thread {
   private Socket socket;
