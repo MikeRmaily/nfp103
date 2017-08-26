@@ -19,6 +19,12 @@ import java.util.Vector;
  */
 public class Client {
 
+    public static int port = 9999;
+
+    public Client(int port) {
+        this.port = 9999;
+    }
+
     public static int counter = 1;
     public static Vector position = new Vector(3);
 
@@ -33,7 +39,8 @@ public class Client {
             setPosition(rn.nextInt(10) + 1, rn.nextInt(10) + 1, rn.nextInt(10) + 1);
 
             //Open Socket with Remote Server
-            Socket sock = new Socket("localhost", 9999);
+            System.out.println(port);
+            Socket sock = new Socket("localhost", port);
             PrintStream pr = new PrintStream(sock.getOutputStream());
 
             /*Get Input from console
@@ -55,6 +62,7 @@ public class Client {
                 } else {
                     v = getPosition(1, 0, 0, 0);
                 }
+
                 String varDumb = v.toString();
                 //Push info to server
                 System.out.println(varDumb);
