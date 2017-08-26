@@ -10,7 +10,7 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-
+import client.Client;
 /**
  *
  * @author Mike
@@ -23,7 +23,9 @@ public class Server {
     public static void main(String[] args) {
         // TODO code application logic here
         try {
+            //Client x= new Client(9999);
             ServerSocket ser = new ServerSocket(9999);
+            
             Socket sock = ser.accept();
             BufferedReader ed = new BufferedReader(new InputStreamReader(sock.getInputStream()));
             String tmp;
