@@ -41,37 +41,37 @@ public class Client {
             InputStreamReader rd = new InputStreamReader(System.in);
             BufferedReader ed = new BufferedReader(rd);
             String temp = ed.readLine();
-            */
+             */
             //Get Info from server
             BufferedReader Ack = new BufferedReader(new InputStreamReader(sock.getInputStream()));
             String StrAck;
             //Push Position to server
             Vector v;
             int i = 1;
-            while (true) {                
-               
+            while (true) {
+
                 if (i % 5 == 0) {
-                    v = getPosition(2, 100);
+                    v = getPosition(2, 10, 5, 3);
                 } else {
-                    v = getPosition(1, 0);
+                    v = getPosition(1, 0, 0, 0);
                 }
                 String varDumb = v.toString();
                 //Push info to server
                 System.out.println(varDumb);
                 pr.println(varDumb);
                 i++;
-                               
+
                 StrAck = Ack.readLine();
-                
-                if(StrAck.equals("crash")){
+
+                if (StrAck.equals("crash")) {
                     System.out.println("Stop you gonna crash!");
                     System.exit(0);
-                }else{
-                     System.out.println(StrAck);
+                } else {
+                    System.out.println(StrAck);
                 }
                 Thread.sleep(1000);
 
-            }       
+            }
         } catch (IOException ex) {
             System.out.print(ex);
         }
@@ -104,22 +104,22 @@ public class Client {
         return z;
     }
 
-    public static void updateVitesse(float x, float y, float z) {
-
+    public static void updateVitesse(int x, int y, int z) {
+        setPosition(getPositionX() + x, getPositionY() + y, getPositionZ() + z);
     }
 
     public static void cap(float angle, float vitesse, float attitude) {
 
     }
 
-    public static Vector getPosition(int type, int value) {
+    public static Vector getPosition(int type, int x, int y, int z) {
 
         switch (type) {
             case 1:
                 setPosition(getPositionX() + 1, getPositionY() + 1, getPositionZ() + 1);
                 break;
             case 2:
-                setPosition(getPositionX() + value, getPositionY() + value, getPositionZ() + value);
+                updateVitesse(x, y, z);
                 break;
         }
 
