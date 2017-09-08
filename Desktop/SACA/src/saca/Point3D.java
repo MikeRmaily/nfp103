@@ -4,18 +4,17 @@
  * and open the template in the editor.
  */
 package saca;
-import java.io.Serializable;
 /**
  *
  * @author Khalil Bsaibes
  */
 public class Point3D {
 
-    float x;
-    float y;
-    float z;
+    int x;
+    int y;
+    int z;
 
-    Point3D(float x, float y, float z) {
+    Point3D(int x, int y, int z) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -34,9 +33,8 @@ public class Point3D {
     }
 
     public void Plus(Acceleration Acc) {
-        this.x = this.x + Acc.x;
-        this.y = this.y + Acc.y;
-        this.z = this.z + Acc.z;
+        this.x = this.x + Acc.getVitesse();
+        this.y = (int) ((Math.tan(Acc.getCap()) * Acc.getVitesse()) + this.y);
     }
 
     public String ToString() {

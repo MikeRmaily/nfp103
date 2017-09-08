@@ -4,21 +4,19 @@
  * and open the template in the editor.
  */
 package saca;
+
 /**
  *
- * @author Mike
+ * @author Khalil Bsaibes
  */
 public class Acceleration{
-     float x;
-    float y;
-    float z;
+
     private int cap;
     private int vitesse;
     
-    Acceleration(float x,float y,float z){
-    this.x = x;
-    this.y = y;
-    this.z = z;
+    Acceleration(int vitesse, int angle){
+    setVitesse(vitesse);
+    setCap(angle);
     }
     
 
