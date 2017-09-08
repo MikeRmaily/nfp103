@@ -24,6 +24,7 @@ public class Avion extends Thread {
     PrintStream pr;
     String flightname;
     public static int port = 9999;
+    public Socket socket;
 
     public String getFlightname() {
         return flightname;
@@ -39,16 +40,17 @@ public class Avion extends Thread {
     int VITMAX = 600;
     int VITMIN = 200;
 
-    public Avion(Socket socket) {
+    public Avion() {
         //Init TCP
         try {
             socket = new Socket("localhost", port);
-            PrintStream pr = new PrintStream(socket.getOutputStream());
-            
+            pr = new PrintStream(socket.getOutputStream());
+
             CurrentPosition = new Point3D(0, 0, 0);
             Acc = new Acceleration(1, 0);
             this.flightname = getRandomName();
-            pr.println(this.flightname+" Took off");
+            //  pr.flush();
+            pr.println(this.flightname + " Took off>>>");
         } catch (IOException ex) {
             System.out.print(ex);
         }
@@ -61,6 +63,7 @@ public class Avion extends Thread {
         do {
             this.CurrentPosition.Plus(Acc);
             System.out.println(this.flightname + " " + this.CurrentPosition.ToString());
+            sendInfo();
             try {
                 Thread.sleep(500);
             } catch (InterruptedException ex) {
@@ -71,19 +74,26 @@ public class Avion extends Thread {
     }
 
     public void sendInfo() {
-        System.out.println("Sending Using socket " + flightname);
+        //System.out.println("Sending Using socket " + flightname);
         // String StrAck;
         String info = "Airplane " + flightname + ":\n"
                 + "----X:  " + CurrentPosition.getX() + " \n----Y:  " + CurrentPosition.getY() + "\n----Z:  " + CurrentPosition.getZ() + "\n";
 
         //Push Info
-        pr.flush();
         pr.println(info);
-
+        // System.out.println(info);
         //Get Info from server 
         //BufferedReader Ack = new BufferedReader(new InputStreamReader(sock.getInputStream()));
         //StrAck = Ack.readLine();
         //return info;
+    }
+
+    public String getInfo() {
+
+        String info = "Airplane " + flightname + ":\n"
+                + "----X:  " + CurrentPosition.getX() + " \n----Y:  " + CurrentPosition.getY() + "\n----Z:  " + CurrentPosition.getZ() + "\n";
+
+        return info;
     }
 
     public void setPosition(Point3D CurrentPosition) {

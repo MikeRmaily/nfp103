@@ -232,9 +232,10 @@ public class MainConsole extends javax.swing.JFrame {
         
     }//GEN-LAST:event_btnTrackActionPerformed
     public void trackAirplane(){
-        // Avion myAvion = (Avion) mySaca.hmap.get(ddlAirplanes.getSelectedItem().toString());
+         Avion myAvion = (Avion) mySaca.hmap.get(ddlAirplanes.getSelectedItem().toString());
+        System.out.println("SACA TRACK: "+mySaca.getInfo());
         Console.append("\n" );
-        Console.append(mySaca.getInfo() + "\n");
+        Console.append(myAvion.getInfo() + "\n");
     }
     
     private void btnStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartActionPerformed
@@ -242,7 +243,7 @@ public class MainConsole extends javax.swing.JFrame {
        
             Avion myavion = mySaca.InitAirplane();
             ddlAirplanes.addItem(myavion.getFlightname());
-            Console.append("Airplane " + myavion.getFlightname()+ " take off...\n" );
+ //           Console.append("Airplane " + myavion.getFlightname()+ " take off...\n" );
 //             Thread.State state = Thread.currentThread().getState();
 //             System.out.println(state);
 //            if (state == Thread.State.NEW){

@@ -13,6 +13,8 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -26,9 +28,9 @@ public class SACA {
     private ObjectOutputStream output;
     HashMap<String, Avion> hmap = new HashMap<String, Avion>();
     public ServerSocket ser;
-    public Socket sock;
+
     private String tmp;
-    public static int port = 1000;
+    public static int port = 9999;
 
     public SACA() {
 
@@ -44,35 +46,63 @@ public class SACA {
         // TODO code application logic here
     }
 
-    public String getInfo() {
+    Avion InitAirplane() {
 
-        tmp = input.toString();
-        // PrintStream pr = new PrintStream(sock.getOutputStream());
-        //tmp = ed.readLine();
-        // ed.reset();
+        Avion myavion = new Avion();
+        myavion.start();
+        hmap.put(myavion.getFlightname(), myavion);
+        return myavion;
+
+    }
+
+    public String getInfo() {
 
         return tmp;
     }
 
-    Avion InitAirplane() {
-        Avion myavion = new Avion(sock);
-        myavion.start();
-        hmap.put(myavion.getFlightname(), myavion);
-        return myavion;
+    public void openCommunication() {
+        final ExecutorService clientProcessingPool = Executors.newFixedThreadPool(10);
+
+        Runnable serverTask = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    ser = new ServerSocket(port);
+                    System.out.println("Waiting for clients to connect...");
+                    while (true) {
+                        Socket clientSocket = ser.accept();
+                        clientProcessingPool.submit(new ClientTask(clientSocket));
+                        BufferedReader ed = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                        tmp = ed.readLine();
+                        
+                        System.out.println("Socket Message: "+ tmp);
+                    }
+                } catch (IOException e) {
+                    System.out.println(e);
+                }
+            }
+        };
+        Thread serverThread = new Thread(serverTask);
+        serverThread.start();
+
     }
 
-    private void openCommunication() {
-        try {
-            ser = new ServerSocket(port);
+    private class ClientTask implements Runnable {
 
-            sock = ser.accept();
+        private final Socket clientSocket;
 
-            input = new ObjectInputStream(sock.getInputStream());
-
-        } catch (IOException e) {
-            System.err.println("Could not listen on port " + port);
-
+        private ClientTask(Socket clientSocket) {
+            this.clientSocket = clientSocket;
         }
+
+        @Override
+        public void run() {
+
+            System.out.println("Got a client !");
+
+            // Do whatever required to process the client's request
+        }
+
     }
 
 }
