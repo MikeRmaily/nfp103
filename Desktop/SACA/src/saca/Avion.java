@@ -5,7 +5,12 @@
  */
 package saca;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
 import static java.lang.Math.random;
+import java.net.Socket;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,7 +21,9 @@ import java.util.logging.Logger;
  */
 public class Avion extends Thread {
 
+    PrintStream pr;
     String flightname;
+    public static int port = 9999;
 
     public String getFlightname() {
         return flightname;
@@ -32,15 +39,25 @@ public class Avion extends Thread {
     int VITMAX = 600;
     int VITMIN = 200;
 
-    public Avion() {
-        CurrentPosition = new Point3D(0,0,0);
-        Acc = new Acceleration(1,0);
-        this.flightname=getRandomName();
+    public Avion(Socket socket) {
+        //Init TCP
+        try {
+            socket = new Socket("localhost", port);
+            PrintStream pr = new PrintStream(socket.getOutputStream());
+            
+            CurrentPosition = new Point3D(0, 0, 0);
+            Acc = new Acceleration(1, 0);
+            this.flightname = getRandomName();
+            pr.println(this.flightname+" Took off");
+        } catch (IOException ex) {
+            System.out.print(ex);
+        }
     }
 
     @Override
     public void run() {
         initialiseravion();
+
         do {
             this.CurrentPosition.Plus(Acc);
             System.out.println(this.flightname + " " + this.CurrentPosition.ToString());
@@ -50,32 +67,41 @@ public class Avion extends Thread {
                 Logger.getLogger(Avion.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-        } while ( Thread.currentThread().isAlive());
+        } while (Thread.currentThread().isAlive());
     }
-    
-    public String getInfo() {
-        String info = "Airplane " + flightname + ":\n" 
-                + "----X:  " + CurrentPosition.getX()+" \n----Y:  "+CurrentPosition.getY()+"\n----Z:  "+CurrentPosition.getZ()+"\n";
 
-        return info;
+    public void sendInfo() {
+        System.out.println("Sending Using socket " + flightname);
+        // String StrAck;
+        String info = "Airplane " + flightname + ":\n"
+                + "----X:  " + CurrentPosition.getX() + " \n----Y:  " + CurrentPosition.getY() + "\n----Z:  " + CurrentPosition.getZ() + "\n";
+
+        //Push Info
+        pr.flush();
+        pr.println(info);
+
+        //Get Info from server 
+        //BufferedReader Ack = new BufferedReader(new InputStreamReader(sock.getInputStream()));
+        //StrAck = Ack.readLine();
+        //return info;
     }
+
     public void setPosition(Point3D CurrentPosition) {
         this.CurrentPosition = CurrentPosition;
     }
-    
 
     /**
      * ******************************
      *** Fonctions gérant le déplacement de l'avion : ne pas modifier
-     * ******************************
-     * @param name
+     *
+     * ****************************** @param name
      */
     // initialise aléatoirement les paramétres initiaux de l'avion
     private void initialiseravion() {
+
         // initialisation al�atoire du compteur aléatoire
         // intialisation des paramétres de l'avion
-        
-      //  Random numberGenerator = new Random();
+        //  Random numberGenerator = new Random();
         CurrentPosition.setX((int) (1000 + random() % 1000));
         CurrentPosition.setY((int) (1000 + random() % 1000));
         CurrentPosition.setZ((int) (1000 + random() % 1000));
@@ -84,9 +110,10 @@ public class Avion extends Thread {
 //        CurrentPosition.setZ((int) ( numberGenerator.nextInt(100) % 1000));
         Acc.setCap(0);
         Acc.setVitesse(1);
+        sendInfo();
     }
 
-     private String getRandomName() {
+    private String getRandomName() {
         String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         StringBuilder salt = new StringBuilder();
         Random rnd = new Random();
@@ -97,6 +124,5 @@ public class Avion extends Thread {
         String saltStr = salt.toString();
         return saltStr;
     }
-   
-}
 
+}

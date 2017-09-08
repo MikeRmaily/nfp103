@@ -55,8 +55,10 @@ public class CollisionDetector extends Thread {
                 if (avion1.CurrentPosition.getX() == avion2.CurrentPosition.getX() && avion1.CurrentPosition.getY() == avion2.CurrentPosition.getY() && avion1.CurrentPosition.getZ() == avion2.CurrentPosition.getZ()) {
                     rval.put(avion1, avion2);
                     System.out.println(avion1.flightname + " will crash with" + avion2.flightname);
-
-                    //avion1.Acc.setCap(avion1.Acc.set);
+                    
+                    //Change Airplain Direction
+                    int newCap=avion1.Acc.getCap()+1;
+                    avion1.Acc.setCap(newCap);
                 }
             }
 

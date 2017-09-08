@@ -16,7 +16,7 @@ import java.util.Set;
  */
 public class MainConsole extends javax.swing.JFrame {
     SACA mySaca = new SACA();
-  //  CollisionDetector MyColDetector = new CollisionDetector(mySaca);
+    CollisionDetector MyColDetector = new CollisionDetector(mySaca);
     
     int speed = 1;
     int angle = 0;
@@ -232,9 +232,9 @@ public class MainConsole extends javax.swing.JFrame {
         
     }//GEN-LAST:event_btnTrackActionPerformed
     public void trackAirplane(){
-         Avion myAvion = (Avion) mySaca.hmap.get(ddlAirplanes.getSelectedItem().toString());
+        // Avion myAvion = (Avion) mySaca.hmap.get(ddlAirplanes.getSelectedItem().toString());
         Console.append("\n" );
-        Console.append(myAvion.getInfo() + "\n");
+        Console.append(mySaca.getInfo() + "\n");
     }
     
     private void btnStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartActionPerformed
