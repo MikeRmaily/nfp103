@@ -9,16 +9,15 @@ package saca;
  *
  * @author Khalil Bsaibes
  */
-public class Acceleration{
+public class Acceleration {
 
     private int cap;
     private int vitesse;
-    
-    Acceleration(int vitesse, int angle){
-    setVitesse(vitesse);
-    setCap(angle);
+
+    Acceleration(int vitesse, int angle) {
+        setVitesse(vitesse);
+        setCap(angle);
     }
-    
 
     public int getVitesse() {
         return vitesse;
