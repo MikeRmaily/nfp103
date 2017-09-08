@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package saca;
-
 /**
  *
  * @author Khalil Bsaibes
@@ -65,5 +64,5 @@ public class Point3D {
     public void setZ(int z) {
         this.z = z;
     }
-
+    
 }

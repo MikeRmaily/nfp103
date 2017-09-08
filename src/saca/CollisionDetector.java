@@ -56,9 +56,7 @@ public class CollisionDetector extends Thread {
                     rval.put(avion1, avion2);
                     System.out.println(avion1.flightname + " will crash with" + avion2.flightname);
 
-                    //Change Airplain Direction
-                    int newCap = avion1.Acc.getCap() + 1;
-                    avion1.Acc.setCap(newCap);
+                    //avion1.Acc.setCap(avion1.Acc.set);
                 }
             }
 
